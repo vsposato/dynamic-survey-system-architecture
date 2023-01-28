@@ -1,0 +1,24 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(respondent, "Respondent", "A respondent to a customer's surveys.")
+Person(customer, "Customer", "A customer who creates surveys, sets up respondents, reports on data, and other tasks.")
+Person(admin, "Admin", "An admin who manages customers, tenant, and other overall administrative functionality.")
+System(dss, "Dynamic Survey System", "Allows customers to manage surveys and respondents to take surveys.")
+System_Ext(twilio, "Twilio", "External sms and voice communication system to communicate with respondents.")
+System_Ext(sendgrid, "SendGrid", "External email system to communicate with respondents.")
+
+Rel(customer, dss, "Customer", "Manages account, sets up surveys, manages respondents, and reports on data.")
+Rel(admin, dss, "Admin", "Manages customers, tenants, and other administrative tasks.")
+Rel(dss, twilio, "Manages", "Sets up phone numbers, services, and other functions.")
+BiRel(dss, twilio, "Communicates", "Sends/Receives sms and voice surveys using")
+BiRel(twilio, respondent, "Communicates", "Sends/Receives sms/voices surveys to/from")
+BiRel(dss, twilio, "Communicates", "Sends/Receives sms and voice notifications using")
+BiRel(twilio, customer, "Communicates", "Sends/Receives sms/voices notifications to/from")
+BiRel(twilio, admin, "Communicates", "Sends/Receives sms/voices notifications to/from")
+Rel(dss, sendgrid, "Communicates", "Sends emails using")
+Rel(sendgrid, respondent, "Communicates", "Sends emails to")
+Rel(sendgrid, customer, "Communicates", "Sends emails to")
+Rel(sendgrid, admin, "Communicates", "Sends emails to")
+Rel(respondent, dss, "Responds", "Completes web-based surveys")
+@enduml
