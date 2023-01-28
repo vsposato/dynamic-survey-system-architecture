@@ -1,0 +1,18 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(respondent, "Respondent", "A respondent to a customer's surveys.")
+Person(customer, "Customer", "A customer who creates surveys, sets up respondents, reports on data, and other tasks.")
+System(dss, "Dynamic Survey System", "Allows customers to manage surveys and respondents to take surveys.")
+System_Ext(twilio, "Twilio", "External sms and voice communication system to communicate with respondents.")
+System_Ext(sendgrid, "SendGrid", "External email system to communicate with respondents.")
+SystemDb(sql, "DSS Database", "Stores information from surveys, customer information.")
+
+Rel(customer, dss, "Customer", "Manages account, sets up surveys, manages respondents, and reports on data.")
+Rel(dss, sql, "Storage", "Stores customer, respondent, and survey data.")
+BiRel(dss, twilio, "Communicates", "Schedules/Sends sms and voice surveys using")
+BiRel(twilio, respondent, "Communicates", "Sends sms/voices surveys to")
+Rel(dss, sendgrid, "Communicates", "Sends emails using")
+Rel(sendgrid, respondent, "Communicates", "Sends emails to")
+Rel(respondent, dss, "Responds", "Completes web-based surveys")
+@enduml
