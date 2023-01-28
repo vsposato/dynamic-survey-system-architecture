@@ -1,0 +1,34 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+!define DEVICONS2 https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons2
+!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+!include DEVICONS/angular.puml
+!include DEVICONS2/react_original.puml
+!include DEVICONS2/spring.puml
+!include DEVICONS/msql_server.puml
+!include FONTAWESOME/users.puml
+
+System_Ext(twilio, "Twilio", "External sms and voice communication system to communicate with respondents.")
+Container(spa_admin, "Single Page Application", "Javascript and React", "Provides all the administrative facing functionality via their web browser.", $sprite="react_original")
+Container(spa_customer, "Single Page Application", "Javascript and React", "Provides all the customer facing functionality via their web browser.", $sprite="react_original")
+ContainerDb(sql, "DSS Database", "Relational Database Schema", "Stores information from surveys, customer information.", $sprite="msql_server")
+
+Container_Boundary(twilio_ms, "Twilio Microservice") {
+  Component(twilio_mgmt_ctrl, "Twilio Management Controller", "Spring MVC REST Controller", "Allows users to manage their Twilio configuration.", $sprite="spring")
+  Component(twilio_mgmt_svc, "Twilio Management Service", "Spring Bean", "Provides functionality related to Twilio configuration management.", $sprite="spring")
+  Rel(twilio_mgmt_ctrl, twilio_mgmt_svc, "Uses", "")
+  Component(twilio_phone_ctrl, "Twilio Phone Number Controller", "Spring MVC REST Controller", "Allows users to manager their Twilio phone numbers", $sprite="spring")
+  Component(twilio_phone_svc, "Twilio Phone Number Service", "Spring Bean", "Provides functionality related to Twilio phone number management", $sprite="spring")
+  Rel(twilio_phone_ctrl, twilio_phone_svc, "Uses", "")
+}
+Rel(spa_admin, twilio_mgmt_ctrl, "Makes API Calls to", "JSON/HTTPS")
+Rel(spa_customer, twilio_mgmt_ctrl, "Makes API Calls to", "JSON/HTTPS")
+Rel(twilio_mgmt_svc, sql, "Reads from/Writes to", "JDBC/JPA")
+BiRel(twilio_mgmt_svc, twilio, "Communicates With", "XML/JSON/HTTPS")
+Rel(spa_admin, twilio_phone_ctrl, "Makes API Calls to", "JSON/HTTPS")
+Rel(spa_customer, twilio_phone_ctrl, "Makes API Calls to", "JSON/HTTPS")
+Rel(twilio_phone_svc, sql, "Reads from/Writes to", "JDBC/JPA")
+BiRel(twilio_phone_svc, twilio, "Communicates With", "XML/JSON/HTTPS")
+@enduml
