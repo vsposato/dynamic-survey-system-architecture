@@ -1,0 +1,63 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+!define DEVICONS2 https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons2
+!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+!include DEVICONS/angular.puml
+!include DEVICONS2/react_original.puml
+!include DEVICONS2/spring.puml
+!include DEVICONS/msql_server.puml
+!include FONTAWESOME/users.puml
+
+Person(respondent, "Respondent", "A respondent to a customer's surveys.", $sprite="users")
+Person(customer, "Customer", "A customer who creates surveys, sets up respondents, reports on data, and other tasks.", $sprite="users")
+Person(admin, "Admin", "An admin who manages customers, tenant, and other overall administrative functionality.", $sprite="users")
+System_Ext(twilio, "Twilio", "External sms and voice communication system to communicate with respondents.")
+System_Ext(sendgrid, "SendGrid", "External email system to communicate with respondents.")
+Container_Boundary(dss_boundary, "Dynamic Survey System") {
+  Container(web, "Web Application", "Java and Spring MVC", "Delivers the static content and the appropriate SPA for the logged in user.", $sprite="spring")
+  Container(spa_admin, "Single Page Application", "Javascript and React", "Provides all the administrative facing functionality via their web browser.", $sprite="react_original")
+  Container(spa_respondent, "Single Page Application", "Javascript and React", "Provides all the respondent facing functionality via their web browser.", $sprite="react_original")
+  Container(spa_customer, "Single Page Application", "Javascript and React", "Provides all the customer facing functionality via their web browser.", $sprite="react_original")
+  Container(report_ms, "Reporting Microservice", "Java and Spring MVC", "Provides Reporting functionality via a JSON/HTTPS API.", $sprite="spring")
+  Container(sengrid_ms, "SendGrid Microservice", "Java and Spring MVC", "Provides SendGrid functionality via a JSON/HTTPS API.", $sprite="spring")
+  Container(twilio_ms, "Twilio Microservice", "Java and Spring MVC", "Provides Twilio functionality via a JSON/HTTPS API.", $sprite="spring")
+  Container(survey_ms, "Survey Microservice", "Java and Spring MVC", "Provides Survey functionality via a JSON/HTTPS API.", $sprite="spring")
+  Container(customer_ms, "Tenant Microservice", "Java and Spring MVC", "Provides Customer/Tenant functionality via a JSON/HTTPS API.", $sprite="spring")
+  ContainerDb(sql, "DSS Database", "Relational Database Schema", "Stores information from surveys, customer information.", $sprite="msql_server")
+  BiRel(customer_ms, sql, "Reads from and writes to", "JDBC/JPA")
+  BiRel(survey_ms, sql, "Reads from and writes to", "JDBC/JPA")
+  BiRel(twilio_ms, sql, "Reads from and writes to", "JDBC/JPA")
+  BiRel(sengrid_ms, sql, "Reads from and writes to", "JDBC/JPA")
+  Rel(web, spa_customer, "Delivers to the customer's web browser", "")
+  Rel(web, spa_admin, "Delivers to the customer's web browser", "")
+  Rel(web, spa_respondent, "Delivers to the customer's web browser", "")
+  Rel(spa_customer, customer_ms, "Makes API calls to", "JSON/HTTPS")
+  Rel(spa_admin, customer_ms, "Makes API calls to", "JSON/HTTPS")
+  Rel(spa_customer, survey_ms, "Makes API calls to", "JSON/HTTPS")
+  Rel(spa_admin, survey_ms, "Makes API calls to", "JSON/HTTPS")
+  Rel(spa_respondent, survey_ms, "Makes API calls to", "JSON/HTTPS")
+  Rel(spa_customer, twilio_ms, "Makes API calls to", "JSON/HTTPS")
+  Rel(spa_admin, twilio_ms, "Makes API calls to", "JSON/HTTPS")
+  Rel(spa_customer, sengrid_ms, "Makes API calls to", "JSON/HTTPS")
+  Rel(spa_admin, sengrid_ms, "Makes API calls to", "JSON/HTTPS")
+  Rel(spa_customer, report_ms, "Makes API calls to", "JSON/HTTPS")
+  Rel(spa_admin, report_ms, "Makes API calls to", "JSON/HTTPS")
+  BiRel(twilio_ms, twilio, "Sends/Receives sms and voice surveys using", "XML/JSON/HTTPS")
+  Rel(twilio_ms, twilio, "Sets up phone numbers, services, and other functions.", "XML/JSON/HTTPS")
+  BiRel(twilio, respondent, "Sends/Receives sms/voices surveys to/from", "")
+  BiRel(twilio, customer, "Communicates", "Sends/Receives sms/voices notifications to/from")
+  BiRel(twilio, admin, "Communicates", "Sends/Receives sms/voices notifications to/from")
+  Rel(sengrid_ms, sendgrid, "Sends emails using", "JSON/HTTPS")
+  Rel(sendgrid, respondent, "Sends emails to", "SMTP")
+  Rel(sendgrid, customer, "Communicates", "Sends emails to")
+  Rel(sendgrid, admin, "Communicates", "Sends emails to")
+  Rel(respondent, web, "Visits dss website using", "HTTPS")
+  Rel(respondent, spa_respondent, "Completes web-based surveys.", "")
+  Rel(customer, web, "Visits dss website using", "HTTPS")
+  Rel(customer, spa_customer, "Manages account, sets up surveys, manages respondents, and reports on data.", "")
+  Rel(admin, web, "Visits dss website using", "HTTPS")
+  Rel(admin, spa_admin, "Manages customers, tenants, and other administrative tasks.", "")
+}
+@enduml
