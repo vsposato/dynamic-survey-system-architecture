@@ -13,22 +13,42 @@
 System_Ext(twilio, "Twilio", "External sms and voice communication system to communicate with respondents.")
 Container(spa_admin, "Single Page Application", "Javascript and React", "Provides all the administrative facing functionality via their web browser.", $sprite="react_original")
 Container(spa_customer, "Single Page Application", "Javascript and React", "Provides all the customer facing functionality via their web browser.", $sprite="react_original")
+Container(survey_ms, "Survey Microservice", "Java and Spring MVC", "Provides Survey functionality via a JSON/HTTPS API.", $sprite="spring")
 ContainerDb(sql, "DSS Database", "Relational Database Schema", "Stores information from surveys, customer information.", $sprite="msql_server")
 
 Container_Boundary(twilio_ms, "Twilio Microservice") {
+  ' Twilio Management Controller Definition
   Component(twilio_mgmt_ctrl, "Twilio Management Controller", "Spring MVC REST Controller", "Allows users to manage their Twilio configuration.", $sprite="spring")
   Component(twilio_mgmt_svc, "Twilio Management Service", "Spring Bean", "Provides functionality related to Twilio configuration management.", $sprite="spring")
   Rel(twilio_mgmt_ctrl, twilio_mgmt_svc, "Uses", "")
+
+  ' Twilio Phone Controller Definition
   Component(twilio_phone_ctrl, "Twilio Phone Number Controller", "Spring MVC REST Controller", "Allows users to manager their Twilio phone numbers", $sprite="spring")
   Component(twilio_phone_svc, "Twilio Phone Number Service", "Spring Bean", "Provides functionality related to Twilio phone number management", $sprite="spring")
   Rel(twilio_phone_ctrl, twilio_phone_svc, "Uses", "")
+
+  ' Twilio WhatsApp Template Controller Definition
+  Component(twilio_wa_tpl_ctrl, "Twilio WhatsApp Template Controller", "Spring MVC REST Controller", "Allows users to manager their Twilio WhatsApp templates", $sprite="spring")
+  Component(twilio_wa_tpl_svc, "Twilio WhatsApp Template Service", "Spring Bean", "Provides functionality related to Twilio WhatsApp template management", $sprite="spring")
+  Rel(twilio_wa_tpl_ctrl, twilio_wa_tpl_svc, "Uses", "")
+
+
 }
+' Twilio Management Controller Relationships
 Rel(spa_admin, twilio_mgmt_ctrl, "Makes API Calls to", "JSON/HTTPS")
 Rel(spa_customer, twilio_mgmt_ctrl, "Makes API Calls to", "JSON/HTTPS")
 Rel(twilio_mgmt_svc, sql, "Reads from/Writes to", "JDBC/JPA")
 BiRel(twilio_mgmt_svc, twilio, "Communicates With", "XML/JSON/HTTPS")
+
+' Twilio Phone Controller Relationships
 Rel(spa_admin, twilio_phone_ctrl, "Makes API Calls to", "JSON/HTTPS")
 Rel(spa_customer, twilio_phone_ctrl, "Makes API Calls to", "JSON/HTTPS")
 Rel(twilio_phone_svc, sql, "Reads from/Writes to", "JDBC/JPA")
 BiRel(twilio_phone_svc, twilio, "Communicates With", "XML/JSON/HTTPS")
+
+' Twilio WhatsApp Template Controller Relationships
+Rel(spa_admin, twilio_wa_tpl_ctrl, "Makes API Calls to", "JSON/HTTPS")
+Rel(spa_customer, twilio_wa_tpl_ctrl, "Makes API Calls to", "JSON/HTTPS")
+Rel(twilio_wa_tpl_svc, sql, "Reads from/Writes to", "JDBC/JPA")
+BiRel(twilio_wa_tpl_svc, twilio, "Communicates With", "XML/JSON/HTTPS")
 @enduml
