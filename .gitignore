@@ -85,6 +85,7 @@ fabric.properties
 # that are supposed to be shared within teams.
 
 **/*.png
+**/*.html
 
 .idea/*
 
