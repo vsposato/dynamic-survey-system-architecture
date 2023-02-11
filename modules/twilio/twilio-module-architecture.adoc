@@ -1,0 +1,12 @@
+= Twilio Module Architecture
+Vincent Sposato <vincent.sposato@gmail.com>
+v1.0, 2023-02-11
+
+== High Level Component Architecture
+
+[#twilio-component-c4]
+.Twilio Component C4 Model
+[link=C4-TwilioComponent.png]
+image::C4-TwilioComponent.png[]
+
+

@@ -7,11 +7,13 @@ export PLANT_UML_PNG_FILES=$(find . -path ./addons -prune -o -name "*.png" -prin
 
 for f in $PLANT_UML_PNG_FILES
 do
+  echo "Removing PNG $f"
   rm $f
 done
 
 for f in $PLANT_UML_FILES
 do
+  echo "Creating PNG for $f"
   java -jar $PLANT_UML $f -tpng
 done
 
@@ -21,10 +23,12 @@ export ASCII_DOC_HTML_FILES=$(find . -path ./addons -prune -o -name "*.html" -pr
 
 for f in $ASCII_DOC_HTML_FILES
 do
+  echo "Removing HTML file $f"
   rm $f
 done
 
 for f in $ASCII_DOC_FILES
 do
+  echo "Creating HTML file for $f"
   $ASCII_DOC_SHELL $f
 done

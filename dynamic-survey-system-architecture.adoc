@@ -1,0 +1,11 @@
+= Dynamic Survey System Architecture
+Vincent Sposato <Vincent.Sposato@gmail.com>
+v1.0, 2023-02-11
+
+:toc:
+
+== Twilio Module
+
+The Twilio module handle the integration between the system and the Twilio platform.
+
+Refer to <<modules/twilio/twilio-module-architecture.adoc#,Twilio Module>>
