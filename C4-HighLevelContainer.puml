@@ -1,14 +1,5 @@
 @startuml
-!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
-
-!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
-!define DEVICONS2 https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons2
-!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
-!include DEVICONS/angular.puml
-!include DEVICONS2/react_original.puml
-!include DEVICONS2/spring.puml
-!include DEVICONS/msql_server.puml
-!include FONTAWESOME/users.puml
+!include addons/include.puml
 
 Person(respondent, "Respondent", "A respondent to a customer's surveys.", $sprite="users")
 Person(customer, "Customer", "A customer who creates surveys, sets up respondents, reports on data, and other tasks.", $sprite="users")

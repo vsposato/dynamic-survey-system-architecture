@@ -1,14 +1,5 @@
 @startuml
-!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
-
-!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
-!define DEVICONS2 https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons2
-!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
-!include DEVICONS/angular.puml
-!include DEVICONS2/react_original.puml
-!include DEVICONS2/spring.puml
-!include DEVICONS/msql_server.puml
-!include FONTAWESOME/users.puml
+!include ../../addons/include.puml
 
 System_Ext(twilio, "Twilio", "External sms and voice communication system to communicate with respondents.")
 Container(spa_admin, "Single Page Application", "Javascript and React", "Provides all the administrative facing functionality via their web browser.", $sprite="react_original")

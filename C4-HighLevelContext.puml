@@ -1,5 +1,5 @@
 @startuml
-!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!include addons/include.puml
 
 Person(respondent, "Respondent", "A respondent to a customer's surveys.")
 Person(customer, "Customer", "A customer who creates surveys, sets up respondents, reports on data, and other tasks.")
